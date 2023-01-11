@@ -20,7 +20,7 @@
                 <a href="single-blog.html"></a>
                 <router-link :to="{
                     name: 'SingleBlog', 
-                    params: {slug: 'Benefits-of-Getting-covid-19-vaccination'},
+                    params: {slug: 'benefits-of-Getting-covid-19-vaccination'},
                 }">Benefits of Getting Covid 19 Vaccination</router-link>
             </h4>
         </div>
