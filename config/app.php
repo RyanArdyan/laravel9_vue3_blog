@@ -194,7 +194,8 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-
+        // aku mendaftarkannya secara manual karena ada bug
+        App\Providers\FortifyServiceProvider::class
     ],
 
     /*

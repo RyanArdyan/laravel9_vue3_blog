@@ -1,11 +1,15 @@
 import { createRouter, createWebHistory } from "vue-router";
 
+// Import component--component
 import About from '../pages/About.vue'
 import Home from "../pages/Home.vue";
 import Blog from "../pages/Blog.vue";
 import Contact from "../pages/Contact.vue";
 // ini detail blog
 import SingleBlog from "../pages/SingleBlog.vue";
+import Login from '../pages/Login.vue';
+import Register from '../pages/Register.vue';
+import Dashboard from '../pages/Dashboard.vue';
 
 const routes = [
     {
@@ -34,6 +38,21 @@ const routes = [
         component: SingleBlog,
         props: true,
     },
+    {
+        path: "/login",
+        name: "Login",
+        component: Login
+    },
+    {
+        path: '/register',
+        name: 'Register',
+        component: Register
+    },
+    {
+        path: '/dashboard',
+        name: 'Dashboard',
+        component: Dashboard
+    }
 ];
 
 const router = createRouter({

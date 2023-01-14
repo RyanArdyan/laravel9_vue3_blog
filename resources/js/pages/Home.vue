@@ -11,7 +11,7 @@
     <h2 class="header-title">Latest Blog Posts</h2>
     <section class="cards-blog latest-blog">
         <div class="card-blog-content">
-            <img src="images/pic1.jpg" alt="" />
+            <img src="/images/pic1.jpg" alt="" />
             <p>
                 2 hours ago
                 <span style="float: right">Written By Alphayo Wakarindi</span>
@@ -26,7 +26,7 @@
         </div>
 
         <div class="card-blog-content">
-            <img src="images/pic2.jpg" alt="" />
+            <img src="/images/pic2.jpg" alt="" />
             <p>
                 23 hours ago
                 <span style="float: right">Written By Alphayo Wakarindi</span>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="card-blog-content">
-            <img src="images/pic3.jpg" alt="" />
+            <img src="/images/pic3.jpg" alt="" />
             <p>
                 2 days ago
                 <span style="float: right">Written By Alphayo Wakarindi</span>
@@ -48,7 +48,7 @@
         </div>
 
         <div class="card-blog-content">
-            <img src="images/pic4.jpg" alt="" />
+            <img src="/images/pic4.jpg" alt="" />
             <p>
                 3 days ago
                 <span style="float: right">Written By Alphayo Wakarindi</span>

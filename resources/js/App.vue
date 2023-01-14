@@ -4,16 +4,33 @@
         <!-- value overlayVisibily adalah false -->
         <div class="sidebar" :class="{showOverlay: overlayVisibility}">
 
-            <span class="closeButton" @click="hideOverlay">&times;</span>
+            <span class="closeButton" @click="hideOverlay()">&times;</span>
             <p class="brand-title"><a href="#">Tiko Blog</a></p>
 
             <div class="side-links">
                 <ul>
                     <!-- panggil router yang bernama home -->
-                    <li><router-link @click="hideOverlay()" :to="{name: 'Home'}">Home</router-link></li>
-                    <li><router-link @click="hideOverlay()" :to="{name: 'Blog'}">Blog</router-link></li>
-                    <li><router-link @click="hideOverlay()" :to="{name: 'About'}">About</router-link></li>
-                    <li><router-link @click="hideOverlay()" :to="{name: 'Contact'}">Contact</router-link></li>
+                    <li>
+                        <router-link @click="hideOverlay()" :to="{name: 'Home'}">Home</router-link>
+                    </li>
+                    <li>
+                        <router-link @click="hideOverlay()" :to="{name: 'Blog'}">Blog</router-link>
+                    </li>
+                    <li>
+                        <router-link @click="hideOverlay()" :to="{name: 'About'}">About</router-link>
+                    </li>
+                    <li>
+                        <router-link @click="hideOverlay()" :to="{name: 'Contact'}">Contact</router-link>
+                    </li>
+                    <li>
+                        <router-link @click="hideOverlay()" :to="{name: 'Register'}">Register</router-link>
+                    </li>
+                    <li>
+                        <router-link @click="hideOverlay()" :to="{name: 'Login'}">Login</router-link>
+                    </li>
+                    <li>
+                        <router-link @click="hideOverlay()" :to="{name: 'Dashboard'}">Dashboard</router-link>
+                    </li>
                 </ul>
             </div>
 
@@ -65,7 +82,7 @@
         methods: {
             // buat method
             ShowOverlay() {
-                // panggil property overlayVisibility
+                // panggil property overlayVisibility, yg tadinya false, akan menjadi true
                 this.overlayVisibility = true
             },
             hideOverlay() {
@@ -75,6 +92,7 @@
     };
 </script>
 
+<!-- Ketika sebuah <style>tag memiliki scopedatribut, CSS-nya akan berlaku hanya untuk elemen komponen saat ini. -->
 <style scoped>
     /*  fitur toggle menu sidebar  */
     .showOverlay {
