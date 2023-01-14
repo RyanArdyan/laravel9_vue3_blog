@@ -1,6 +1,6 @@
 <template>
   <div id="backend-view">
-    <div class="logout"><a href="#" @click="logout">Log out</a></div>
+    <div class="logout"><a href="#" @click="logout()">Log out</a></div>
     <h1 class="heading">Dashboard</h1>
     <span>Hi {{ name }}!</span>
     <div class="links">
@@ -20,38 +20,37 @@
 </template>
 
 <script>
-export default {
-  data() {
-    return {
-      name: "",
-    };
-  },
-  mounted() {
-    axios
-      .get("/api/user")
-      .then((response) => (this.name = response.data.name))
-      .catch((error) => {
-        if (error.response.status === 401) {
-          this.$emit("updateSidebar");
-          localStorage.removeItem("authenticated");
-          this.$router.push({ name: "Login" });
-        }
-      });
-  },
-
-  methods: {
-    logout() {
-      axios
-        .post("/api/logout")
-        .then((response) => {
-          this.$router.push({ name: "Home" });
-          localStorage.removeItem("authenticated");
-          this.$emit("updateSidebar");
-        })
-        .catch((error) => console.log(error));
+  export default {
+    // make a property
+    data() {
+      return {
+        // two way binding / pengikatan dua arah
+        name: ''
+      }
     },
-  },
-};
+    // mounted = pasang
+    mounted() {
+      axios.get('/api/user')
+        .then((response) => {
+          // console.log(response);
+          this.name = response.data.name;
+        })
+        .catch((error) => {
+          console.log(error);
+        });
+    },
+    methods: {
+      logout() {
+        axios.post('/api/logout')
+          .then(() => {
+          this.$router.push({name: 'Home'});
+          // jika ada error maka tangkap errornya
+        }).catch((error) => {
+          console.log(error);
+        });    
+      }
+    },
+  }
 </script>
 
 <style scoped>
