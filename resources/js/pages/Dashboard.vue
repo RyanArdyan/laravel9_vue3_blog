@@ -43,6 +43,8 @@
       logout() {
         axios.post('/api/logout')
           .then(() => {
+          localStorage.removeItem('authenticated');
+          this.$emit('userLogout');
           this.$router.push({name: 'Home'});
           // jika ada error maka tangkap errornya
         }).catch((error) => {

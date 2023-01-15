@@ -60,6 +60,12 @@
         axios.post('/api/register', this.fields).then(() => {
           this.$router.push({name: 'Dashboard'});
           // jika ada error maka tangkap errornya
+          // fitur menghilangkan menu login dan registrasi ketika user sudah login
+          // jadi jika user berhasil login maka localStorage browser akan membuat key authenticated yang bervalue true
+          // localStorage adalah kode API Storage javascript vanilla 
+          localStorage.setItem('authenticated', 'true');
+          // Vue $emit adalah fungsi yang memungkinkan kita memancarkan, atau mengirim, peristiwa khusus dari komponen anak ke induknya.
+          this.$emit('updateSidebar');
         }).catch((error) => {
           // console.log(error);
           // panggil property errors lalu diisi dengan error.response.data.errors

@@ -1,9 +1,8 @@
 <template>
     <div id="wrapper">
         <!-- tambahkan .showOverlay jika property overlayVisibility true -->
-        <!-- value overlayVisibily adalah false -->
+        <!-- value default overlayVisibily adalah false -->
         <div class="sidebar" :class="{showOverlay: overlayVisibility}">
-
             <span class="closeButton" @click="hideOverlay()">&times;</span>
             <p class="brand-title"><a href="#">Tiko Blog</a></p>
 
@@ -22,10 +21,10 @@
                     <li>
                         <router-link @click="hideOverlay()" :to="{name: 'Contact'}">Contact</router-link>
                     </li>
+                    <!-- jika loggedIn berisi false atau user belum login maka tampilkan register -->
                     <li v-if="!loggedIn">
                         <router-link @click="hideOverlay()" :to="{name: 'Register'}">Register</router-link>
                     </li>
-                    <!-- jika loggedIn berisi false maka jangan tampilkan login -->
                     <li v-if="!loggedIn">
                         <router-link @click="hideOverlay()" :to="{name: 'Login'}">Login</router-link>
                     </li>
@@ -57,7 +56,8 @@
         <main class="container">
             <!-- render/membuat komponen tergantung pada halaman yang dikunjungi -->
             <!-- component adalah view kecil atau child dari App.vue -->
-            <router-view @update-sidebar="updateSidebar()"></router-view>
+			<!-- @update-sidebar berfungsi untuk menangkap emit updateSidebar milik anaknya yaitu login dan register --> 
+            <router-view @user-logout="userLogout()" @update-sidebar="updateSidebar()"></router-view>
         </main>
 
         <!-- Main footer -->
@@ -93,14 +93,17 @@
             },
             // fitur menghilangkan menu login dan registrasi ketika user sudah login
             updateSidebar() {
-                // jadi nanti dari false ke true dan sebaliknya
+             // jadi nanti dari false ke true dan sebaliknya
                 this.loggedIn = !this.loggedIn;
+            },
+            userLogout() {
+                this.loggedIn = false;
             }
         },
 
         mounted() {
-            // jika user sudah login maka pastinya ada 'authenticatd' di localStorage
-            if (localStorage.getItem['authenticated']) {
+            // jika user sudah login maka pastinya ada 'authenticatd' di localStorage karena aku membuat localStorage.setItem('authenticated', 'true') di child nya yaitu Login.vue, jadi aku bisa mendapatkan nya menggunakan localStorage.getItem
+            if (localStorage.getItem('authenticated')) {
                 this.loggedIn = true;
             } else {
                 this.loggedIn = false;

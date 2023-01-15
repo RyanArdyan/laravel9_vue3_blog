@@ -41,7 +41,8 @@ export default {
           // jadi jika user berhasil login maka localStorage browser akan membuat key authenticated yang bervalue true
           // localStorage adalah kode API Storage javascript vanilla 
           localStorage.setItem('authenticated', 'true');
-          // Vue $emit adalah fungsi yang memungkinkan kita memancarkan, atau mengirim, peristiwa khusus dari komponen anak ke induknya.
+          // Vue $emit adalah fungsi yang memungkinkan kita mengirim peristiwa khusus dari komponen anak ke induknya.
+		  // kirim emit updateSidebar, lalu router-view milik parent yaitu App.vue akan menangkapnya menggunakan @update-sidebar
           this.$emit('updateSidebar');
         })
         .catch((error) => {
