@@ -22,13 +22,15 @@
                     <li>
                         <router-link @click="hideOverlay()" :to="{name: 'Contact'}">Contact</router-link>
                     </li>
-                    <li>
+                    <li v-if="!loggedIn">
                         <router-link @click="hideOverlay()" :to="{name: 'Register'}">Register</router-link>
                     </li>
-                    <li>
+                    <!-- jika loggedIn berisi false maka jangan tampilkan login -->
+                    <li v-if="!loggedIn">
                         <router-link @click="hideOverlay()" :to="{name: 'Login'}">Login</router-link>
                     </li>
-                    <li>
+                    <!-- jika loggedIn berisi true maka tampilkan dashboard -->
+                    <li v-if="loggedIn">
                         <router-link @click="hideOverlay()" :to="{name: 'Dashboard'}">Dashboard</router-link>
                     </li>
                 </ul>
@@ -55,7 +57,7 @@
         <main class="container">
             <!-- render/membuat komponen tergantung pada halaman yang dikunjungi -->
             <!-- component adalah view kecil atau child dari App.vue -->
-            <router-view></router-view>
+            <router-view @update-sidebar="updateSidebar()"></router-view>
         </main>
 
         <!-- Main footer -->
@@ -76,6 +78,7 @@
             return {
                 // buat property
                 overlayVisibility: false,
+                loggedIn: false
             };
         },
 
@@ -87,7 +90,21 @@
             },
             hideOverlay() {
                 this.overlayVisibility = false;
+            },
+            // fitur menghilangkan menu login dan registrasi ketika user sudah login
+            updateSidebar() {
+                // jadi nanti dari false ke true dan sebaliknya
+                this.loggedIn = !this.loggedIn;
             }
+        },
+
+        mounted() {
+            // jika user sudah login maka pastinya ada 'authenticatd' di localStorage
+            if (localStorage.getItem['authenticated']) {
+                this.loggedIn = true;
+            } else {
+                this.loggedIn = false;
+            };
         }
     };
 </script>

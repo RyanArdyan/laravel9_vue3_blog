@@ -7,8 +7,11 @@
       <span v-if="errors.email" class="error">{{ errors.email[0] }}</span>
 
       <label for="password">Password</label>
-      <input type="password" id="password" v-model="fields.password" />
+      <input :type="tipe_input_password" id="password" v-model="fields.password" />
       <span v-if="errors.password" class="error">{{ errors.password[0] }}</span>
+
+      <!-- fitur tampilkan password dan sembunyikan password -->
+      <p @click="ubah_tipe_input_password()" class="pointer_cursor" style="margin-top: 0;">{{ ubah_keterangan }}</p>
 
       <button type="submit">Log In</button>
       <span>Don't have an account? <a href="">Sign up</a></span>
@@ -22,6 +25,10 @@ export default {
     return {
       fields: {},
       errors: {},
+      // fitur tampilkan dan sembunyikan password
+      tipe_input_password: "password",
+      ubah_keterangan: "Lihat password",
+      // akhir fitur tampilkan dan sembunyikan password
     };
   },
   methods: {
@@ -30,12 +37,30 @@ export default {
         .post("/api/login", this.fields)
         .then(() => {
           this.$router.push({ name: "Dashboard" });
-          localStorage.setItem("authenticated", "true");
-          this.$emit("updateSidebar");
+          // fitur menghilangkan menu login dan registrasi ketika user sudah login
+          // jadi jika user berhasil login maka localStorage browser akan membuat key authenticated yang bervalue true
+          // localStorage adalah kode API Storage javascript vanilla 
+          localStorage.setItem('authenticated', 'true');
+          // Vue $emit adalah fungsi yang memungkinkan kita memancarkan, atau mengirim, peristiwa khusus dari komponen anak ke induknya.
+          this.$emit('updateSidebar');
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
         });
+    },
+
+    // fitur tampilkan password dan sembunyikan password
+    ubah_tipe_input_password() {
+      // bawaannya kan "password" jadi apakah "password" === "password" berarti true, karena true ubah property tipe_input_password menjadi text
+        if (this.tipe_input_password === "password") {
+            this.tipe_input_password = "text";
+            this.ubah_keterangan = "Sembunyikan Password";
+        // apakah "text" === "password"? jawabannya adalah false
+        } else {
+            // berarti sekarang tipe_input_password pada awalnya adalah text jadi kita ubah ke password
+            this.tipe_input_password = "password";
+            this.ubah_keterangan = "Tampilkan Password";
+        };
     },
   },
 };
