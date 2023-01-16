@@ -6,6 +6,7 @@ use Illuminate\Support\Facades\Route;
 use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 // vendor/laravel/fortify/src/Http/Controller
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
+use App\Http\Controllers\CategoryController;
 
 
 /*
@@ -26,5 +27,8 @@ Route::middleware('auth:sanctum')->post('logout', [AuthenticatedSessionControlle
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+// categories
+Route::middleware('auth:sanctum')->post('/categories/create', [CategoryController::class, 'store']);
 
 Route::post('/register', [RegisteredUserController::class, 'store']);

@@ -9,7 +9,7 @@
           <a>Create Post</a>
         </li>
         <li>
-          <a>Create Categori</a>
+          <router-link :to="{name:  'CreateCategories'}">Create Categories</router-link>
         </li>
         <li>
           <a>Categories List</a>
