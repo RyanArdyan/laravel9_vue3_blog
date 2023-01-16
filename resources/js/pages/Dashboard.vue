@@ -36,7 +36,15 @@
           this.name = response.data.name;
         })
         .catch((error) => {
-          console.log(error);
+          // fitur melakukan logout otomatis terhadap user jika SESSION_LIFETIME sudah habis
+          // status === 401 berarti UNAUTHORIZED yang berarti user belum login
+          // Jadi aku mengatur CONSTANTA SESSSION_LIFETIME di .env laravel menjadi 1 menit, berarti jika user login lalu user tidak melakukan apa apa dalam waktu 1 menit lalu aku melakukan reload maka harusnya session nya habis lalu user harus kembali ke halaman login
+          if (error.response.status === 401) {
+            // panggil update-sidebar di router-view milik parent nya yaitu App.vue, jadi property loggedIn punya parent adalah true karena kita panggil $emit maka dia akan jadi false
+            this.$emit('updateSidebar');
+            localStorage.removeItem('authenticated');
+            this.$router.push({name: 'Login'});
+          };
         });
     },
     methods: {

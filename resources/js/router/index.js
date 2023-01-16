@@ -64,17 +64,21 @@ const router = createRouter({
 });
 
 router.beforeEach((to, from) => {
+    // jika user berhasil login atau register maka di application > localStorage akan membuat key authenticated, lalu kita mengambilnya
     const authenticated = localStorage.getItem("authenticated");
 
+    // jika user yang sudah login mencoba mengakses login atau register maka arahkan ke dashboard
     if (to.meta.requiresGuest && authenticated) {
         return {
             name: 'Dashboard'
         };
+    // jika key authenticated tidak ada di localStorage maka
+    // user belum login dan mencoba mengakses dashboard maka arahkan ke halaman dashboard
     } else if (to.meta.requiresAuth && !authenticated) {
         return {
             name: 'Login'
         };
     }
-}) 
+});
 
 export default router;
