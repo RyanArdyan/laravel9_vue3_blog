@@ -11,6 +11,7 @@ import Login from '../pages/Login.vue';
 import Register from '../pages/Register.vue';
 import Dashboard from '../pages/Dashboard.vue';
 import CreateCategories from '../pages/categories/CreateCategories.vue';
+import CategoriesList from '../pages/categories/CategoriesList.vue';
 
 const routes = [
     {
@@ -63,6 +64,12 @@ const routes = [
         component: CreateCategories,
         meta: {requiresAuth: true}
     },
+    {
+        path:'/categories',
+        name: 'CategoriesList',
+        component: CategoriesList,
+        meta: {requireAuth: true}
+    }
 ];
 
 const router = createRouter({

@@ -12,7 +12,7 @@
           <router-link :to="{name:  'CreateCategories'}">Create Categories</router-link>
         </li>
         <li>
-          <a>Categories List</a>
+          <router-link :to="{name: 'CategoriesList'}">Categories List</router-link>
         </li>
       </ul>
     </div>

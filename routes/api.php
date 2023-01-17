@@ -8,20 +8,9 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\CategoryController;
 
-
-/*
-|--------------------------------------------------------------------------
-| API Routes
-|--------------------------------------------------------------------------
-|
-| Here is where you can register API routes for your application. These
-| routes are loaded by the RouteServiceProvider within a group which
-| is assigned the "api" middleware group. Enjoy building your API!
-|
-*/
-
 // Untuk melindungi rute sehingga semua permintaan yang masuk harus diautentikasi, Anda harus melampirkan sanctum pelindung autentikasi ke rute
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/register', [RegisteredUserController::class, 'store']);
 Route::middleware('auth:sanctum')->post('logout', [AuthenticatedSessionController::class, 'destroy']);
 // Jadi begini cuk ada url api/user yg akan mengambil detail user, nanti aku akan gunakan itu di dashboard.vue pake axios untuk mengambil detail dan melakukan two way binding
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
@@ -30,5 +19,5 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 // categories
 Route::middleware('auth:sanctum')->post('/categories/create', [CategoryController::class, 'store']);
+Route::middleware('auth:sanctum')->get('/categories', [CategoryController::class, 'index'])->name('categories.index');
 
-Route::post('/register', [RegisteredUserController::class, 'store']);

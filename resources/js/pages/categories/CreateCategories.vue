@@ -19,9 +19,9 @@
         </form>
       </div>
       <div class="create-categories">
-        <!-- <router-link :to="{ name: 'CategoriesList' }"
+        <router-link :to="{ name: 'CategoriesList' }"
           >Categories List <span>&#8594;</span></router-link
-        > -->
+        >
       </div>
     </div>
   </div>
@@ -39,6 +39,8 @@
 
     methods: {
       submit() {
+		// anggaplah ini beforeSend jquery versi vue js
+        this.errors = {},
         axios.post("/api/categories/create", this.field)
         .then(() => {
           // jika kategori sudah disimpan di table maka reset input dan errors
