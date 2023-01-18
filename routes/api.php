@@ -18,6 +18,13 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 // categories
+// karena aku tidak tau cara mengambil token login maka aku hanya bisa melakukan ini jika mencoba fitur simpan kategori
+// Route::post('/kategori', [KategoriController::class, 'store'])->name('kategori.store');
 Route::middleware('auth:sanctum')->post('/categories/create', [CategoryController::class, 'store']);
 Route::middleware('auth:sanctum')->get('/categories', [CategoryController::class, 'index'])->name('categories.index');
+Route::middleware('auth:sanctum')->get('/categories/{category}', [CategoryController::class, 'show']);
+// Route::get('/categories/{category}', [CategoryController::class, 'show']);
+Route::middleware('auth:sanctum')->put('/categories/{category}', [CategoryController::class, 'update']);
+Route::middleware('auth:sanctum')->delete('/categories/{category}', [CategoryController::class, 'destroy']);
+
 

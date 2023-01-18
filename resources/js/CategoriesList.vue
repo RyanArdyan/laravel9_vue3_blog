@@ -14,11 +14,7 @@
       <span>{{ index + 1 }}</span>
       <p>{{ category.name }}</p>
       <div>
-        <router-link
-          class="edit-link"
-          :to="{ name: 'EditCategories', params: { id: category.id } }"
-          >Edit</router-link
-        >
+        <router-link :to="{name: 'EditCategories', params: {id: category.id}}">Edit</router-link>
       </div>
 
       <input
@@ -40,15 +36,15 @@
 export default {
     data() {
         return {
-
+          categories: []
         }
     },
     // mounted = pasang
+    // mounted adalah method yang dijalankan otomatis
     mounted() {
       axios.get('/api/categories')
         .then((response) => {
-          console.log(response);
-          
+          this.categories = response.data;
         })
         .catch((error) => {
           // fitur melakukan logout otomatis terhadap user jika SESSION_LIFETIME sudah habis

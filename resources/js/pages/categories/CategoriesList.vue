@@ -1,11 +1,17 @@
 <template>
   <div class="categories-list">
     <h1>Categories List</h1>
+	
+	<div class="success-msg" v-if="berhasil_perbarui_kategori">
+      <i class="fa fa-check"></i>
+      Kategori berhasil diperbarui
+    </div>
+	
     <!-- success message -->
-    <!-- <div class="success-msg" v-if="success">
+    <div class="success-msg" v-if="success">
       <i class="fa fa-check"></i>
       Deleted successfully
-    </div> -->
+    </div>
 
     <!-- category berisi tiap object data -->
     <!-- index dimulai dari 0 -->
@@ -15,10 +21,10 @@
       <span>{{ index + 1 }}</span>
       <p>{{ category.name }}</p>
       <div>
-        <a href="" class="edit-link">Edit</a>
+        <router-link :to="{name: 'EditCategories', params: {id: category.id}}" class="edit-link">Edit</router-link>
       </div>
 
-      <input type="submit" value="Delete" class="delete-btn" />
+      <input type="button" value="Delete" class="delete-btn" @click="destroy(category.id)">
     </div>
     <div class="index-categories">
       <router-link :to="{ name: 'CreateCategories' }"
@@ -37,15 +43,37 @@ export default {
         // {id: 3, name: 'Baru'}
         // {id: 3, name: 'Baru'}
       // ]
-      categories: []
+      categories: [],
+      // notifikasi kategori berhasil diperbarui
+	    berhasil_perbarui_kategori: false,
+      // notifikasi kategori berhasil dihapus
+      success: false
     }
   },
-  // mounted = pasang
+
+  // mounted akan dijalankan secara otomatis ketika aplikasi dimulai
   mounted() {
-    axios.get('/api/categories')
+    this.fetchCategories();
+  },
+
+  methods: {
+    error_status_401() {
+      this.$emit('updateSidebar');
+      localStorage.removeItem('authenticated');
+      this.$router.push({name: 'Login'});
+    },
+
+    destroy(id) {
+      axios.delete('/api/categories/' + id)
       .then((response) => {
-        console.log(response);
-        this.categories = response.data;
+        // karena datanya sudah hilang satu makanya kita panggil lagi datanya di table agar aplikasi seolah olah melakukan refresh 
+        this.fetchCategories();
+
+        // console.log(response);
+        this.success = true;
+        setInterval(() => {
+            this.success = false;
+        }, 5000);
       })
       .catch((error) => {
         // fitur melakukan logout otomatis terhadap user jika SESSION_LIFETIME sudah habis
@@ -53,12 +81,37 @@ export default {
         // Jadi aku mengatur CONSTANTA SESSSION_LIFETIME di .env laravel menjadi 1 menit, berarti jika user login lalu user tidak melakukan apa apa dalam waktu 1 menit lalu aku melakukan reload maka harusnya session nya habis lalu user harus kembali ke halaman login
         if (error.response.status === 401) {
           // panggil update-sidebar di router-view milik parent nya yaitu App.vue, jadi property loggedIn punya parent adalah true karena kita panggil $emit maka dia akan jadi false
-          this.$emit('updateSidebar');
-          localStorage.removeItem('authenticated');
-          this.$router.push({name: 'Login'});
+          this.error_status_401();
         };
       });
-  },
+    },
+
+    fetchCategories() {
+      axios.get('/api/categories')
+        .then((response) => {
+          // console.log(response);
+          this.categories = response.data;
+          // Fitur menampilkan notifikasi "Kategori berhasil di update"
+          if (localStorage.getItem("berhasil_perbarui_kategori")) {
+            this.berhasil_perbarui_kategori = true;
+
+            setInterval(() => {
+                this.berhasil_perbarui_kategori = false;
+                localStorage.removeItem('berhasil_perbarui_kategori');
+            }, 5000);
+          };
+        })
+        .catch((error) => {
+          // fitur melakukan logout otomatis terhadap user jika SESSION_LIFETIME sudah habis
+          // status === 401 berarti UNAUTHORIZED yang berarti user belum login
+          // Jadi aku mengatur CONSTANTA SESSSION_LIFETIME di .env laravel menjadi 1 menit, berarti jika user login lalu user tidak melakukan apa apa dalam waktu 1 menit lalu aku melakukan reload maka harusnya session nya habis lalu user harus kembali ke halaman login
+          if (error.response.status === 401) {
+            // panggil update-sidebar di router-view milik parent nya yaitu App.vue, jadi property loggedIn punya parent adalah true karena kita panggil $emit maka dia akan jadi false
+            this.error_status_401();
+          };
+        });
+    },
+  }
 };
 </script>
 
