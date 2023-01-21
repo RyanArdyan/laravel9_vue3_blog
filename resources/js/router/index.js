@@ -13,6 +13,7 @@ import Dashboard from '../pages/Dashboard.vue';
 import CreateCategories from '../pages/categories/CreateCategories.vue';
 import CategoriesList from '../pages/categories/CategoriesList.vue';
 import EditCategories from '../pages/categories/EditCategories.vue';
+import CreatePosts from '../pages/posts/CreatePosts.vue';
 
 const routes = [
     {
@@ -78,6 +79,12 @@ const routes = [
         meta: { requireAuth: true},
         // jika sebuah url harus menangkap parameter maka aku butuh props
         props: true
+    },
+    {
+        path: '/posts/create',
+        name: 'CreatePosts',
+        component: CreatePosts,
+        meta: {requireAuth: true}
     }
 ];
 

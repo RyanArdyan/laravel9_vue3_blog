@@ -7,6 +7,7 @@ use Laravel\Fortify\Http\Controllers\RegisteredUserController;
 // vendor/laravel/fortify/src/Http/Controller
 use Laravel\Fortify\Http\Controllers\AuthenticatedSessionController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\PostController;
 
 // Untuk melindungi rute sehingga semua permintaan yang masuk harus diautentikasi, Anda harus melampirkan sanctum pelindung autentikasi ke rute
 Route::post('login', [AuthenticatedSessionController::class, 'store']);
@@ -26,5 +27,6 @@ Route::middleware('auth:sanctum')->get('/categories/{category}', [CategoryContro
 // Route::get('/categories/{category}', [CategoryController::class, 'show']);
 Route::middleware('auth:sanctum')->put('/categories/{category}', [CategoryController::class, 'update']);
 Route::middleware('auth:sanctum')->delete('/categories/{category}', [CategoryController::class, 'destroy']);
+Route::middleware('auth:sanctum')->post('/posts', [PostController::class, 'store'])->name('posts.name');
 
 
