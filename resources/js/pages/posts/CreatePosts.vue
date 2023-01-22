@@ -22,7 +22,8 @@
           <!-- VUE JS tidak mendukung input type file, jadi dia butuh @input -->
           <!-- @input tidak boleh memanggil method yang menggunakan ()  -->
           <!-- :key aku gunakan agar aku bisa reset input type file ketika aku berhasil menyimpan postingan -->
-          <input @change="grabFile" :key="file" type="file" id="image" />
+          <!-- accept="image/*" berfungsi agar aku hanya bisa memilih gambar -->
+          <input @change="grabFile" :key="file" accept="image/*" type="file" id="image" />
           <span v-if="errors.file" class="error">{{ errors.file[0] }}</span>
           <div class="preview pratinjau_gambar">
             <!-- panggil property url -->
@@ -161,6 +162,21 @@ export default {
 </script>
 
 <style scoped>
+input[type=file]::file-selector-button {
+  margin-right: 20px;
+  border: none;
+  background: #084cdf;
+  padding: 10px 20px;
+  border-radius: 10px;
+  color: #fff;
+  cursor: pointer;
+  transition: background .2s ease-in-out;
+}
+
+input[type=file]::file-selector-button:hover {
+  background: #0d45a5;
+}
+
 .create-post {
   background-color: #fff;
   padding: 0 3vw;
