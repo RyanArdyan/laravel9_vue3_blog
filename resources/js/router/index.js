@@ -85,7 +85,7 @@ const routes = [
         name: 'CreatePosts',
         component: CreatePosts,
         meta: {requireAuth: true}
-    }
+    },
 ];
 
 const router = createRouter({

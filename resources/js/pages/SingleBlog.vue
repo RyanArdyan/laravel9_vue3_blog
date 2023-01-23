@@ -1,38 +1,19 @@
 <template>
     <section class="single-blog-post">
-        <h1>Benefits of paul's photography</h1>
+        <h1>{{ post.title }}</h1>
 
         <p class="time-and-author">
-            2 hours ago
-            <span>Written By Alphayo Wakarindi</span>
+            {{ post.created_at }}
+            <span>Written By {{ post.user }}</span>
         </p>
 
         <div class="single-blog-post-ContentImage" data-aos="fade-left">
-            <img src="/images/pic1.jpg" alt="" />
+            <img :src="`/${post.image}`" alt="" />
         </div>
 
         <div class="about-text">
             <p>
-                Vaccination is the most
-                effective way to protect against infectious diseases. Vaccines
-                strengthen your immune system by training it to recognise and
-                fight against specific viruses. When you get vaccinated, you are
-                protecting yourself and helping to protect the whole community.
-                <br><br>
-                A COVID-19 vaccine might:
-            <ul>
-                <li> Prevent you from getting COVID-19 or from
-                    becoming seriously ill or dying due to COVID-19 </li>
-                <li>Prevent you from
-                    spreading the COVID-19 virus to others </li>
-                <li> Add to the number of people
-                    in the community who are protected from getting COVID-19 — making
-                    it harder for the disease to spread and contributing to herd
-                    immunity </li>
-                <li> Prevent the COVID-19 virus from spreading and
-                    replicating, which allows it to mutate and possibly become more
-                    resistant to vaccines</li>
-            </ul>
+                {{ post.body }}
             </p>
         </div>
     </section>
@@ -67,3 +48,32 @@
         </div>
     </section>
 </template>
+
+<script>
+export default {
+    props: ['slug'],
+    data() {
+        return {
+            post: {}
+        }
+    },
+    mounted() {
+        axios.get('/api/posts/' + this.slug)
+            .then((response) => {
+                this.post = response.data.data;
+                // console.log(this.post);
+            })
+            .catch((error) => {
+                // fitur melakukan logout otomatis terhadap user jika SESSION_LIFETIME sudah habis
+                // status === 401 berarti UNAUTHORIZED yang berarti user belum login
+                // Jadi aku mengatur CONSTANTA SESSSION_LIFETIME di .env laravel menjadi 1 menit, berarti jika user login lalu user tidak melakukan apa apa dalam waktu 1 menit lalu aku melakukan reload maka harusnya session nya habis lalu user harus kembali ke halaman login
+                if (error.response.status === 401) {
+                    // panggil update-sidebar di router-view milik parent nya yaitu App.vue, jadi property loggedIn punya parent adalah true karena kita panggil $emit maka dia akan jadi false
+                    this.$emit('updateSidebar');
+                    localStorage.removeItem('authenticated');
+                    this.$router.push({ name: 'Login' });
+                };
+            });
+    }
+}
+</script>

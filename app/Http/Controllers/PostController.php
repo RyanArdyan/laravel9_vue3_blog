@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
+use App\Http\Resources\PostResource;
 use App\Models\Post;
 
 class PostController extends Controller
@@ -45,5 +46,10 @@ class PostController extends Controller
         $post->body = $body;
         $post->imagePath = $imagePath;
         $post->save();
+    }
+
+    public function show(Post $post)
+    {
+        return new PostResource($post);
     }
 }

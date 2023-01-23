@@ -17,7 +17,6 @@
                 <span style="float: right">{{ post.user }}</span>
             </p>
             <h4 style="font-weight: bolder">
-                <a href="single-blog.html"></a>
                 <router-link :to="{
                     name: 'SingleBlog', 
                     params: {slug: post.slug},
