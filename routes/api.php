@@ -31,5 +31,6 @@ Route::middleware('auth:sanctum')->delete('/categories/{category}', [CategoryCon
 Route::middleware('auth:sanctum')->post('/posts', [PostController::class, 'store'])->name('posts.name');
 Route::get('/home-posts', [HomeController::class, 'index'])->name('home.index');
 Route::get('/posts/{post:slug}', [PostController::class, 'show'])->name('post.show');
+Route::get('/posts', [PostController::class, 'index'])->name('post.index');
 
 

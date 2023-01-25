@@ -19,81 +19,48 @@
         </ul>
     </div>
     <section class="cards-blog latest-blog">
-        <div class="card-blog-content">
-            <img src="images/pic1.jpg" alt="" />
+        <div v-for="(post, index) in posts" :key="post.id" class="card-blog-content">
+            <img :src="post.image" alt="" />
             <p>
-                2 hours ago
-                <span>Written By Alphayo Wakarindi</span>
-            </p>
-            <h4>
-                <a href="single-blog.html">Benefits of getting covid 19 vaccination</a>
-            </h4>
-        </div>
-
-        <div class="card-blog-content">
-            <img src="images/pic2.jpg" alt="" />
-            <p>
-                23 hours ago
-                <span>Written By Alphayo Wakarindi</span>
+                {{ post.created_at  }}
+                <span style="float: right">{{ post.user }}</span>
             </p>
             <h4 style="font-weight: bolder">
-                <a href="single-blog.html">Top 10 Music Stories Never Told</a>
+                <router-link :to="{
+                    name: 'SingleBlog', 
+                    params: {slug: post.slug},
+                }">{{ post.title }}</router-link>
             </h4>
-        </div>
-
-        <div class="card-blog-content">
-            <img src="images/pic3.jpg" alt="" />
-            <p>
-                2 days ago
-                <span>Written By Alphayo Wakarindi</span>
-            </p>
-            <h4 style="font-weight: bolder">
-                <a href="single-blog.html">WRC Safari Rally Back To Kenya After 19 Years</a>
-            </h4>
-        </div>
-
-        <div class="card-blog-content">
-            <img src="images/pic4.jpg" alt="" />
-            <p>
-                3 days ago
-                <span>Written By Alphayo Wakarindi</span>
-            </p>
-            <h4 style="font-weight: bolder">
-                <a href="single-blog.html">Premier League 2021/2022 Fixtures</a>
-            </h4>
-        </div>
-
-        <div class="card-blog-content">
-            <img src="images/pic5.jpg" alt="" />
-            <p>
-                2 weeks ago
-                <span>Written By Alphayo Wakarindi</span>
-            </p>
-            <h4 style="font-weight: bolder">
-                <a href="single-blog.html">12 Health Benefits Of Pomegranate Fruit</a>
-            </h4>
-        </div>
-
-        <div class="card-blog-content">
-            <img src="images/pic6.jpg" alt="" />
-            <p>
-                1 month ago
-                <span>Written By Alphayo Wakarindi</span>
-            </p>
-            <h4 style="font-weight: bolder">
-                <a href="single-blog.html">Nairobi, The Only City In The World With A National Park</a>
-            </h4>
-        </div>
-
-        <!-- pagination -->
-        <div class="pagination" id="pagination">
-            <a href="">&laquo;</a>
-            <a class="active" href="">1</a>
-            <a href="">2</a>
-            <a href="">3</a>
-            <a href="">4</a>
-            <a href="">5</a>
-            <a href="">&raquo;</a>
-        </div>
+        </div> 
     </section>
 </template>
+
+<script>
+export default {
+    emits: ['updateSidebar'],
+    data() {
+        return {
+            posts: []
+        }
+    },
+
+    // when the component is mounted
+    mounted() {
+        axios.get('/api/posts')
+        .then((response) => {
+          this.posts = response.data.data;
+        })
+        .catch((error) => {
+          // fitur melakukan logout otomatis terhadap user jika SESSION_LIFETIME sudah habis
+          // status === 401 berarti UNAUTHORIZED yang berarti user belum login
+          // Jadi aku mengatur CONSTANTA SESSSION_LIFETIME di .env laravel menjadi 1 menit, berarti jika user login lalu user tidak melakukan apa apa dalam waktu 1 menit lalu aku melakukan reload maka harusnya session nya habis lalu user harus kembali ke halaman login
+          if (error.response.status === 401) {
+            // panggil update-sidebar di router-view milik parent nya yaitu App.vue, jadi property loggedIn punya parent adalah true karena kita panggil $emit maka dia akan jadi false
+            this.$emit('updateSidebar');
+            localStorage.removeItem('authenticated');
+            this.$router.push({name: 'Login'});
+          };
+        });
+    }
+}
+</script>

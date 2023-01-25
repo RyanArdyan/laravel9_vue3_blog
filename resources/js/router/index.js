@@ -14,6 +14,7 @@ import CreateCategories from '../pages/categories/CreateCategories.vue';
 import CategoriesList from '../pages/categories/CategoriesList.vue';
 import EditCategories from '../pages/categories/EditCategories.vue';
 import CreatePosts from '../pages/posts/CreatePosts.vue';
+import DashboardPostsList from '../pages/posts/DashboardPostsList.vue';
 
 const routes = [
     {
@@ -70,13 +71,13 @@ const routes = [
         path:'/categories',
         name: 'CategoriesList',
         component: CategoriesList,
-        meta: {requireAuth: true}
+        meta: {requiresAuth: true}
     },
     {
         path: '/categories/:id/edit',
         name: 'EditCategories',
         component: EditCategories,
-        meta: { requireAuth: true},
+        meta: { requiresAuth: true},
         // jika sebuah url harus menangkap parameter maka aku butuh props
         props: true
     },
@@ -84,8 +85,14 @@ const routes = [
         path: '/posts/create',
         name: 'CreatePosts',
         component: CreatePosts,
-        meta: {requireAuth: true}
+        meta: {requiresAuth: true}
     },
+    {
+        path: '/dashboard-posts',
+        name: 'DashboardPostsList',
+        component: DashboardPostsList,
+        meta: {requiresAuth: true}
+    }
 ];
 
 const router = createRouter({

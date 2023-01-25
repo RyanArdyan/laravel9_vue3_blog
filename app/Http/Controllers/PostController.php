@@ -9,6 +9,11 @@ use App\Models\Post;
 
 class PostController extends Controller
 {
+    public function index()
+    {
+        return PostResource::collection(Post::latest()->get());
+    }
+
     public function store(Request $request)
     {
         $request->validate([
