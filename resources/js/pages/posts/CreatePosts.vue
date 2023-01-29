@@ -37,7 +37,7 @@
           <!-- nilai dari :value akan masuk ke fields.category_id, misalnya 1 -->
           <select v-model="fields.category_id" id="categories">
             <!-- matikan select option -->
-            <option disabled value="">Select option</option>
+            <option disabled value="0">Select option</option>
             <!-- looping kategori -->
             <option v-for="category in categories" :value="category.id" :key="category.id">{{ category.name }}</option>
           </select>
@@ -112,7 +112,7 @@ export default {
           // agar input type file bisa di reset
           this.file++;
           // reset select category
-          this.fields.category_id = "";
+          this.fields.category_id = "0";
           // tampilkan notifikasi
           this.success = true;
           // reset validasi error
@@ -145,6 +145,8 @@ export default {
     axios.get('/api/categories')
         .then((response) => {
           this.categories = response.data;
+            // fitur pilih optin default ketika user baru memuka Component CreatePosts  
+          this.fields.category_id = '0';
         })
         .catch((error) => {
           // fitur melakukan logout otomatis terhadap user jika SESSION_LIFETIME sudah habis

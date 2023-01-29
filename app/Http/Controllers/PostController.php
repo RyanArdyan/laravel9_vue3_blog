@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use App\Http\Resources\PostResource;
 use App\Models\Post;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -56,5 +57,40 @@ class PostController extends Controller
     public function show(Post $post)
     {
         return new PostResource($post);
+    }
+
+    public function update(Request $request, Post $post) {
+        // validasi input2x formulir
+        $request->validate([
+            'title' => ['required'],
+            'file' => ['nullable', 'image'],
+            'body' => ['required'],
+            'category_id' => ['required']
+        ]);
+
+        $title = $request->title;
+        $category_id = $request->category_id;
+
+        $slug = Str::slug($title, '-') . '-' . $post->id;
+        $body = $request->input('body');
+
+        // jika ada file atau jika user mengupload file
+        if ($request->file('file')) {
+            // pecah gambar agar aku bisa mendapatkan nama gambarnya saja
+            $pecah_gambar = explode('/', $post->imagePath);
+            $nama_gambar = $pecah_gambar[2];
+            // hapus gambar lama
+            Storage::delete("public/postsImages/$nama_gambar");
+            // simpan di folder public, nama filenya adalah storage/postsImages/sfasdl.jpg
+            $imagePath = 'storage/' . $request->file('file')->store('postsImages', 'public');
+            $post->imagePath = $imagePath;
+        };
+
+        // create and save post
+        $post->title = $title;
+        $post->category_id = $category_id;
+        $post->slug = $slug;
+        $post->body = $body;
+        return $post->save();
     }
 }

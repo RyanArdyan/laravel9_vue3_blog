@@ -57,7 +57,7 @@
             <!-- render/membuat komponen tergantung pada halaman yang dikunjungi -->
             <!-- component adalah view kecil atau child dari App.vue -->
 			<!-- @update-sidebar berfungsi untuk menangkap emit updateSidebar milik anaknya yaitu login dan register --> 
-            <router-view @user-logout="userLogout()" @update-sidebar="updateSidebar()"></router-view>
+            <router-view @user-logout="userLogout()" @update-sidebar="updateSidebar()" @show-edit-success="showEditSuccess()" :editSuccess="editSuccess" :key="$route.path"></router-view>
         </main>
 
         <!-- Main footer -->
@@ -78,7 +78,8 @@
             return {
                 // buat property
                 overlayVisibility: false,
-                loggedIn: false
+                loggedIn: false,
+                editSuccess: false
             };
         },
 
@@ -98,6 +99,12 @@
             },
             userLogout() {
                 this.loggedIn = false;
+            },
+            showEditSuccess() {
+                this.editSuccess = true;
+                setInterval(() => {
+                    this.editSuccess = false
+                }, 3000);
             }
         },
 

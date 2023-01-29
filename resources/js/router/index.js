@@ -15,6 +15,7 @@ import CategoriesList from '../pages/categories/CategoriesList.vue';
 import EditCategories from '../pages/categories/EditCategories.vue';
 import CreatePosts from '../pages/posts/CreatePosts.vue';
 import DashboardPostsList from '../pages/posts/DashboardPostsList.vue';
+import EditPosts from '../pages/posts/EditPosts.vue';
 
 const routes = [
     {
@@ -92,6 +93,15 @@ const routes = [
         name: 'DashboardPostsList',
         component: DashboardPostsList,
         meta: {requiresAuth: true}
+    },
+    {
+        // tangkap slug dan kirimkan slug
+        path: '/post/:slug/edit',
+        name: 'EditPosts',
+        component: EditPosts,
+        meta: {requiresAuth: true},
+        // aku akan mengirimkan slug ke component edit vue
+        props: true
     }
 ];
 
