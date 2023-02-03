@@ -14,6 +14,7 @@ class Post extends Model
 
     protected $with = ['user'];
 
+    // 1 postingan ditulis oleh satu user, tidak mungkin 2
     public function user()
     {
         return $this->belongsTo(User::class, 'user_id');

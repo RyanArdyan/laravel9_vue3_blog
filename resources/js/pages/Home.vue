@@ -35,7 +35,7 @@ export default {
         }
     },
 
-    // when the component is mounted
+    // ketika component dipasang maka jalankan fungsi berikut
     mounted() {
         axios.get('/api/home-posts')
         .then((response) => {

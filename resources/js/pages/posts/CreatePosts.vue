@@ -50,6 +50,7 @@
           <span v-if="errors.body" class="error">{{ errors.body[0] }}</span>
           <!-- Button -->
           <input class="add-post-btn" type="submit" value="Submit" />
+          <router-link :to="{name: 'DashboardPostsList'}" class="delete-btn" type="button">Kembali</router-link>
         </form>
       </div>
     </div>

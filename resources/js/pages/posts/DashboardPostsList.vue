@@ -2,13 +2,13 @@
     <div class="categories-list">
         <h1>Posts List</h1>
         <!-- <success message -->
-        <!-- <div class="success-msg">
-        <i class="fa fa-check"></i>
-        Post deleted successfully
-        </div> -->
+        <div class="success-msg" v-if="success">
+            <i class="fa fa-check"></i>
+            Post deleted successfully
+        </div>
         <div class="success-msg" v-if="editSuccess">
-        <i class="fa fa-check"></i>
-        Post edited successfully
+            <i class="fa fa-check"></i>
+            Post edited successfully
         </div>
         <!-- attr :key diperlukan agar pengulangan nya tidak error -->
         <div v-for="(post, index) in beberapa_posts" :key="post.id" class="item">
@@ -16,9 +16,9 @@
             <p>{{ post.title  }}</p>
             <div>
                 <router-link :to="{name: 'EditPosts', params: {slug: post.slug}}" class="edit-link">Edit</router-link>
+                <input @click="destroy(post.slug)" type="button" class="delete-btn" value="delete">
             </div>
 
-            <input type="button" value="Delete" class="delete-btn" />
         </div>
         <div class="index-categories">
             <router-link :to="{ name: 'CreatePosts' }">Create post<span>&#8594;</span></router-link>
@@ -28,11 +28,14 @@
 
 <script>
 export default {
+    // notifikasi postingan berhasil diperbarui
     props: ['editSuccess'],
     // Buat property
     data() {
         return {
-            beberapa_posts: []
+            beberapa_posts: [],
+            // notifikasi postingan berhasil dihapus
+            success: false,
         }
     },
     methods: {
@@ -52,6 +55,47 @@ export default {
                         this.$router.push({name: 'Login'});
                     };
                 })
+        },
+        destroy(slug) {
+            Swal.fire({
+                title: 'Apakah kamu yakin?',
+                text: "Anda tidak akan dapat mengembalikan ini!",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#3085d6',
+                cancelButtonColor: '#d33',
+                confirmButtonText: 'Ya hapus!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        axios.delete(`/api/posts/${slug}`)
+                        .then(() => {
+                        Swal.fire(
+                            'Dihapus!',
+                            'Your file has been deleted.',
+                            'success'
+                        );
+                            
+                            // reload beberapa postingna
+                            this.read_beberapa_posts();
+                        })
+                        .catch((error) => {
+                            // fitur melakukan logout otomatis terhadap user jika SESSION_LIFETIME sudah habis
+                            // status === 401 berarti UNAUTHORIZED yang berarti user belum login
+                            // Jadi aku mengatur CONSTANTA SESSSION_LIFETIME di .env laravel menjadi 1 menit, berarti jika user login lalu user tidak melakukan apa apa dalam waktu 1 menit lalu aku melakukan reload maka harusnya session nya habis lalu user harus kembali ke halaman login
+                            if (error.response.status === 401) {
+                                // panggil update-sidebar di router-view milik parent nya yaitu App.vue, jadi property loggedIn punya parent adalah true karena kita panggil $emit maka dia akan jadi false
+                                this.$emit('updateSidebar');
+                                localStorage.removeItem('authenticated');
+                                this.$router.push({ name: 'Login' });
+                            };
+                        });
+
+                       
+                    }
+                });
+
+
+            
         }
     },
     // jika compoenent berhasil dipasang maka jalankan fungsi berikut

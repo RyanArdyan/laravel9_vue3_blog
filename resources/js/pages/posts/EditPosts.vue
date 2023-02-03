@@ -142,6 +142,9 @@ export default {
                         this.$emit('updateSidebar');
                         localStorage.removeItem('authenticated');
                         this.$router.push({ name: 'Login' });
+                    // lindungi edit post dari nonauthor
+                    } else if (error.response.status === 403) {
+                        this.$router.push({name: 'Home'})
                     };
                 })
         },
@@ -168,9 +171,14 @@ export default {
                         this.$emit('updateSidebar');
                         localStorage.removeItem('authenticated');
                         this.$router.push({ name: 'Login' });
+                    // jika detail post gagal diambil karena aku reload halaman
                     } else if (error.response.status === 404) {
                         this.$router.push({ name: 'DashboardPostsList' });
-                    }
+                    // lindungi edit post dari bukan penulis postingan
+                    } else if (error.response.status === 403) {
+                        this.$router.push({name: 'Home'})
+                    };
+
                 });
         },
 
@@ -196,6 +204,7 @@ export default {
 
     // method yang otomatis dijalankan
     mounted() {
+        // panggil method read_detail_post yang berada diluar
         this.read_detail_post(),
         this.read_semua_kategori()
     },

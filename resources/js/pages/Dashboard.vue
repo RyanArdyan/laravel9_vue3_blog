@@ -31,7 +31,7 @@
         name: ''
       }
     },
-    // mounted = pasang
+    // jika compoennt sudah dipasang maka jalankan fungsi berikut
     mounted() {
       axios.get('/api/user')
         .then((response) => {
@@ -46,6 +46,7 @@
             // panggil update-sidebar di router-view milik parent nya yaitu App.vue, jadi property loggedIn punya parent adalah true karena kita panggil $emit maka dia akan jadi false
             this.$emit('updateSidebar');
             localStorage.removeItem('authenticated');
+            localStorage.removeItem('apakah_admin');
             this.$router.push({name: 'Login'});
           };
         });
@@ -55,6 +56,7 @@
         axios.post('/api/logout')
           .then(() => {
           localStorage.removeItem('authenticated');
+          localStorage.removeItem('apakah_admin');
           this.$emit('userLogout');
           this.$router.push({name: 'Home'});
           // jika ada error maka tangkap errornya

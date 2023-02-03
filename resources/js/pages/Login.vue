@@ -1,9 +1,12 @@
 <template>
   <div id="backend-view">
+    <!-- ketika form dikirim maka cegah reload dan panggil method sbmit -->
     <form @submit.prevent="submit">
       <h3>Login Here</h3>
       <label for="email">Email</label>
+      <!-- masukkan value input email ke dalam property fields key email -->
       <input type="text" id="email" v-model="fields.email" />
+      <!-- jika property errors mempunyai key email maka cetak span -->
       <span v-if="errors.email" class="error">{{ errors.email[0] }}</span>
 
       <label for="password">Password</label>
@@ -34,8 +37,10 @@ export default {
   methods: {
     submit() {
       axios
+        // this.fields berarti aku mengirimkan semua nilai input
         .post("/api/login", this.fields)
-        .then(() => {
+        // jika login berhasil
+        .then((response) => {
           this.$router.push({ name: "Dashboard" });
           // fitur menghilangkan menu login dan registrasi ketika user sudah login
           // jadi jika user berhasil login maka localStorage browser akan membuat key authenticated yang bervalue true
@@ -44,6 +49,12 @@ export default {
           // Vue $emit adalah fungsi yang memungkinkan kita mengirim peristiwa khusus dari komponen anak ke induknya.
 		  // kirim emit updateSidebar, lalu router-view milik parent yaitu App.vue akan menangkapnya menggunakan @update-sidebar
           this.$emit('updateSidebar');
+        // fitur jika user sudah login dan adalah admin maka tampilkan menu dashboard
+            console.log(response.data.is_admin);
+            if (response.data.is_admin === 1) {
+                localStorage.setItem('apakah_admin', 'true');
+                this.$emit('methodApakahAdmin');
+            };
         })
         .catch((error) => {
           this.errors = error.response.data.errors;
