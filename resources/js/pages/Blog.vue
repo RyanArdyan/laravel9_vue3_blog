@@ -43,6 +43,7 @@ export default {
             posts: [],
             categories: [],
             // fitur filter postingan berdasarkan pencarian
+            // string karena value pencarian pasti dalam bentuk string
             title: ''
         }
     },
@@ -50,7 +51,7 @@ export default {
     // awasi perubahan
     watch: {
         // fitur filter postingan berdasarkan pencarian
-        // fungsi watch adalah ketika v-model berubah maka panggil method title
+        // kapanpun v-model="title" berubah, fungsi ini akan berjalan
         title() {
             axios.get('/api/posts', {
                 // kirimkan input name search berisi this.title misalnya postingan 1
@@ -60,7 +61,6 @@ export default {
             })
             .then((response) => {
                 this.posts = response.data.data;
-                console.log(this.posts);
             })
             .catch((error) => {
                 console.log(error);
